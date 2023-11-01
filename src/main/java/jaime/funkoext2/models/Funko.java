@@ -41,6 +41,8 @@ public class Funko {
     @JoinColumn(name = "categoria_id")
     @JsonManagedReference
     private Categoria categoria;
+    @Column
     LocalDate fecha_cre;
+    @Column
     LocalDate fecha_act;
 }

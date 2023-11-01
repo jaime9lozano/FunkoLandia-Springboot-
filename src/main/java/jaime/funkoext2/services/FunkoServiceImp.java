@@ -4,7 +4,9 @@ import jaime.funkoext2.Exceptions.FunkoNoEncontrado;
 import jaime.funkoext2.dto.Funkodto;
 import jaime.funkoext2.dto.FunkodtoUpdated;
 import jaime.funkoext2.mapper.mapeador;
+import jaime.funkoext2.models.Categoria;
 import jaime.funkoext2.models.Funko;
+import jaime.funkoext2.repository.CategoriaRepository;
 import jaime.funkoext2.repository.FunkoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -20,15 +22,18 @@ import java.util.Optional;
 @CacheConfig(cacheNames = {"funkos"})
 public class FunkoServiceImp implements FunkoService {
     FunkoRepository funkoRepository;
+    CategoriaRepository categoriaRepository;
     mapeador map = new mapeador();
     @Autowired
-    public FunkoServiceImp(FunkoRepository funkoRepository) {
+    public FunkoServiceImp(FunkoRepository funkoRepository,CategoriaRepository categoriaRepository) {
         this.funkoRepository = funkoRepository;
+        this.categoriaRepository = categoriaRepository;
     }
     @Override
     public List<Funko> findall() {
         return funkoRepository.findAll();
     }
+
 
     @Override
     @Cacheable
@@ -45,16 +50,23 @@ public class FunkoServiceImp implements FunkoService {
     @Override
     @CachePut
     public Funko save(Funkodto funkodto) {
-        Funko funko1 = map.toFunkoNew(funkodto);
+        Categoria categoria= categoriaRepository.findByCategoria(funkodto.getCategoria().toUpperCase());
+        Funko funko1 = map.toFunkoNew(funkodto,categoria);
         return funkoRepository.save(funko1);
     }
 
     @Override
     @CachePut
-    public Funko update(Long id, FunkodtoUpdated funko) {
+    public Funko update(Long id, FunkodtoUpdated funkoUpdated) {
         Optional<Funko> existingFunko = funkoRepository.findById(id);
+        Categoria categoria = null;
         if (existingFunko.isPresent()) {
-            Funko funko1 =map.toFunkoUpdated(funko, existingFunko.get());
+            if (funkoUpdated.getCategoria() != null && !funkoUpdated.getCategoria().isEmpty()) {
+                categoria = categoriaRepository.findByCategoria(funkoUpdated.getCategoria().toUpperCase());
+            } else {
+                categoria = existingFunko.get().getCategoria();
+            }
+            Funko funko1 =map.toFunkoUpdated(funkoUpdated, existingFunko.get(),categoria);
             return funkoRepository.save(funko1);
         } else {
             throw new FunkoNoEncontrado(id);

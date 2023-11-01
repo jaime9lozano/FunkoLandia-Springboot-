@@ -9,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class FunkodtoUpdated {
     @NotBlank(message = "El nombre no puede estar vacío")
-    String name;
+    String nombre;
     @NotNull(message = "El precio no puede estar vacío")
     @Positive(message = "El precio no puede ser negativo")
     Double precio;
@@ -18,4 +18,5 @@ public class FunkodtoUpdated {
     int cantidad;
     @NotBlank(message = "El nombre no puede estar vacío")
     String imagen;
+    String categoria;
 }
