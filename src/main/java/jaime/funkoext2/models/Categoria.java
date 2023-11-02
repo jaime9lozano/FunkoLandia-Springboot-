@@ -25,9 +25,6 @@ public class Categoria {
     @Column(nullable = false)
     @NotBlank(message = "La categoria no puede estar vacía")
     private String categoria;
-    @OneToMany(mappedBy = "categoria")
-    @JsonBackReference
-    private List<Funko> funkos;
     @Column
     LocalDate fecha_cre;
     @Column

@@ -1,5 +1,6 @@
 package jaime.funkoext2.services;
 
+import jaime.funkoext2.Exceptions.CategoriaNoEncontrada;
 import jaime.funkoext2.Exceptions.FunkoNoEncontrado;
 import jaime.funkoext2.dto.Funkodto;
 import jaime.funkoext2.dto.FunkodtoUpdated;
@@ -51,6 +52,9 @@ public class FunkoServiceImp implements FunkoService {
     @CachePut
     public Funko save(Funkodto funkodto) {
         Categoria categoria= categoriaRepository.findByCategoria(funkodto.getCategoria().toUpperCase());
+        if (categoria == null) {
+            throw new CategoriaNoEncontrada(funkodto.getCategoria().toUpperCase());
+        }
         Funko funko1 = map.toFunkoNew(funkodto,categoria);
         return funkoRepository.save(funko1);
     }
@@ -63,6 +67,9 @@ public class FunkoServiceImp implements FunkoService {
         if (existingFunko.isPresent()) {
             if (funkoUpdated.getCategoria() != null && !funkoUpdated.getCategoria().isEmpty()) {
                 categoria = categoriaRepository.findByCategoria(funkoUpdated.getCategoria().toUpperCase());
+                if (categoria == null) {
+                    throw new CategoriaNoEncontrada(funkoUpdated.getCategoria().toUpperCase());
+                }
             } else {
                 categoria = existingFunko.get().getCategoria();
             }
