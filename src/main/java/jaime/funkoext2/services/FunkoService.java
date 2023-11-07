@@ -2,7 +2,6 @@ package jaime.funkoext2.services;
 
 import jaime.funkoext2.dto.Funkodto;
 import jaime.funkoext2.dto.FunkodtoUpdated;
-import jaime.funkoext2.models.Categoria;
 import jaime.funkoext2.models.Funko;
 
 import java.util.List;

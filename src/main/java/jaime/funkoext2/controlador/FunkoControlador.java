@@ -39,7 +39,6 @@ public class FunkoControlador {
     @PostMapping("/funkos")
     public ResponseEntity<Funko> createProduct(@Valid @RequestBody Funkodto funko) {
         return ResponseEntity.status(HttpStatus.CREATED).body(funkoServicio.save(funko));
-
     }
 
     @PutMapping("/funkos/{id}")

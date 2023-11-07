@@ -37,7 +37,7 @@ public class Funko {
     @Column(nullable = false)
     @NotBlank(message = "El nombre no puede estar vacío")
     String imagen;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "categoria_id")
     @JsonManagedReference
     private Categoria categoria;
