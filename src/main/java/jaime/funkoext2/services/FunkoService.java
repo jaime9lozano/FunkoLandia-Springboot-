@@ -1,5 +1,6 @@
 package jaime.funkoext2.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jaime.funkoext2.dto.Funkodto;
 import jaime.funkoext2.dto.FunkodtoUpdated;
 import jaime.funkoext2.models.Funko;

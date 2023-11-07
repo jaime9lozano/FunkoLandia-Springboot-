@@ -10,5 +10,4 @@ import java.util.List;
 @Repository
 public interface FunkoRepository extends JpaRepository<Funko, Long> {
     List<Funko> findByNombre(String nombre);
-    List<Funko> findByCategoriaId(Long categoriaId);
 }

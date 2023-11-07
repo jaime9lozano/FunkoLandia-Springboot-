@@ -1,4 +1,5 @@
 package jaime.funkoext2.services;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jaime.funkoext2.Exceptions.CategoriaNoEncontrada;
 import jaime.funkoext2.dto.Funkodto;
 import jaime.funkoext2.dto.FunkodtoUpdated;
@@ -111,7 +112,7 @@ class FunkoServicioImpTest {
 
     }
     @Test
-    void save() {
+    void save() throws JsonProcessingException {
         Funkodto funkoDto = new Funkodto("Nuevo Funko", 19.99, 5, "Nueva Categoría", "marvel");
         when(categoriaRepository.findByCategoria(funkoDto.getCategoria().toUpperCase())).thenReturn(categoria1);
         Funko newFunko = map.toFunkoNew(funkoDto,categoria1);

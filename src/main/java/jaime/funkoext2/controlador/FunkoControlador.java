@@ -2,6 +2,7 @@ package jaime.funkoext2.controlador;
 
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jaime.funkoext2.dto.Funkodto;
 import jaime.funkoext2.dto.FunkodtoUpdated;
 import jaime.funkoext2.models.Funko;
@@ -37,7 +38,7 @@ public class FunkoControlador {
     }
 
     @PostMapping("/funkos")
-    public ResponseEntity<Funko> createProduct(@Valid @RequestBody Funkodto funko) {
+    public ResponseEntity<Funko> createProduct(@Valid @RequestBody Funkodto funko)  {
         return ResponseEntity.status(HttpStatus.CREATED).body(funkoServicio.save(funko));
     }
 

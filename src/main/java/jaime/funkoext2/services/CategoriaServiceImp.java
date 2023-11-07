@@ -1,5 +1,6 @@
 package jaime.funkoext2.services;
 
+import jaime.funkoext2.Exceptions.CategoriaConflict;
 import jaime.funkoext2.Exceptions.CategoriaNoEncontrada;
 import jaime.funkoext2.dto.Categoriadto;
 import jaime.funkoext2.dto.CategoriadtoUpdated;
@@ -21,12 +22,10 @@ import java.util.List;
 @CacheConfig(cacheNames = {"categorias"})
 public class CategoriaServiceImp implements CategoriaService {
     CategoriaRepository categoriaRepository;
-    FunkoRepository funkoRepository;
     mapeador map = new mapeador();
     @Autowired
-    public CategoriaServiceImp(CategoriaRepository categoriaRepository, FunkoRepository funkoRepository) {
+    public CategoriaServiceImp(CategoriaRepository categoriaRepository) {
         this.categoriaRepository = categoriaRepository;
-        this.funkoRepository = funkoRepository;
     }
     @Override
     public List<Categoria> findall() {
@@ -66,19 +65,12 @@ public class CategoriaServiceImp implements CategoriaService {
 
     @Override
     @CacheEvict
-    public boolean DeleteById(Long id) {
+    public void DeleteById(Long id) {
         Categoria categoria = findById(id);
-        categoriaRepository.deleteById(id);
-        return true;
-    }
-
-    @Override
-    public boolean categoriaNull(Long categoryId) {
-        List<Funko> funkosToUpdate = funkoRepository.findByCategoriaId(categoryId);
-        for (Funko funko : funkosToUpdate) {
-            funko.setCategoria(null);
-            funkoRepository.save(funko);
+        if(categoriaRepository.existsProductoById(id)){
+            throw new CategoriaConflict("No se puede borrar la categoría con id " + id + " porque tiene productos asociados");
+        }else{
+            categoriaRepository.deleteById(id);
         }
-        return true;
     }
 }

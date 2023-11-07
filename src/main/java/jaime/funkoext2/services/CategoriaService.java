@@ -13,6 +13,5 @@ public interface CategoriaService {
     Categoria findById(Long id);
     Categoria save(Categoriadto categoriadto);
     Categoria update(Long id, CategoriadtoUpdated categoriadto);
-    boolean DeleteById(Long id);
-    boolean categoriaNull(Long categoryId);
+    void DeleteById(Long id);
 }
