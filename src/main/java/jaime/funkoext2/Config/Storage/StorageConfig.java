@@ -1,4 +1,4 @@
-package jaime.funkoext2.storage.Config;
+package jaime.funkoext2.Config.Storage;
 
 import jaime.funkoext2.storage.Services.StorageService;
 import jakarta.annotation.PostConstruct;

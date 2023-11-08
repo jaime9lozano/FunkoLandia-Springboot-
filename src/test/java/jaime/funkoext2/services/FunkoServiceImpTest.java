@@ -1,6 +1,12 @@
 package jaime.funkoext2.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jaime.funkoext2.Config.WebSocket.WebSocketConfig;
+import jaime.funkoext2.Config.WebSocket.WebSocketHandler;
 import jaime.funkoext2.Exceptions.CategoriaNoEncontrada;
+import jaime.funkoext2.WebSocket.FunkoNotificacionMapper;
+import jaime.funkoext2.WebSocket.FunkoNotificacionResponse;
+import jaime.funkoext2.WebSocket.Notificacion;
 import jaime.funkoext2.dto.Funkodto;
 import jaime.funkoext2.dto.FunkodtoUpdated;
 import jaime.funkoext2.Exceptions.FunkoNoEncontrado;
@@ -9,14 +15,18 @@ import jaime.funkoext2.models.Categoria;
 import jaime.funkoext2.models.Funko;
 import jaime.funkoext2.repository.CategoriaRepository;
 import jaime.funkoext2.repository.FunkoRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,9 +46,21 @@ class FunkoServicioImpTest {
     private FunkoRepository funkoRepositorio;
     @Mock
     private CategoriaRepository categoriaRepository;
+    @Mock
+    WebSocketConfig webSocketConfig;
+    @Mock
+    FunkoNotificacionMapper funkoNotificacionMapper;
     @InjectMocks
     private FunkoServiceImp funkoServicioImp;
     private mapeador map = new mapeador();
+    private ObjectMapper mapper = new ObjectMapper();
+    WebSocketHandler webSocketService = mock(WebSocketHandler.class);
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+        funkoServicioImp = new FunkoServiceImp(funkoRepositorio, categoriaRepository, webSocketConfig, funkoNotificacionMapper);
+    }
+
 
     @Test
     void findall() {
@@ -218,4 +240,11 @@ class FunkoServicioImpTest {
 
         verify(funkoRepositorio, times(1)).findById(id);
     }
+    @Test
+    void testOnChange() throws IOException {
+        doNothing().when(webSocketService).sendMessage(any(String.class));
+
+        funkoServicioImp.onChange(Notificacion.Tipo.CREATE, funko1);
+    }
+
 }
