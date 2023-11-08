@@ -1,6 +1,5 @@
 package jaime.funkoext2.storage.Controller;
 
-import jaime.funkoext2.dto.Funkodto;
 import jaime.funkoext2.dto.FunkodtoUpdated;
 import jaime.funkoext2.models.Funko;
 import jaime.funkoext2.services.FunkoService;
