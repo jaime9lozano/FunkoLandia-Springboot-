@@ -1,6 +1,7 @@
 package jaime.funkoext2.storage.Controller;
 
 import jaime.funkoext2.dto.FunkodtoUpdated;
+import jaime.funkoext2.models.Categoria;
 import jaime.funkoext2.models.Funko;
 import jaime.funkoext2.services.FunkoService;
 import jaime.funkoext2.storage.Services.StorageService;
@@ -16,14 +17,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -47,7 +47,6 @@ class StorageControllerTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
         storageController = new StorageController(storageService, funkoService);
     }
 
@@ -59,7 +58,8 @@ class StorageControllerTest {
         Resource resource = mock(Resource.class);
 
         when(storageService.loadAsResource(filename)).thenReturn(resource);
-        when(request.getServletContext().getMimeType(anyString())).thenReturn("image/jpeg");
+        when(request.getServletContext().getMimeType(eq(filename))).thenReturn("image/jpeg");
+
 
         // Act and Assert
         mockMvc.perform(MockMvcRequestBuilders
@@ -111,7 +111,8 @@ class StorageControllerTest {
         // Arrange
         Long id = 1L;
         MockMultipartFile file = new MockMultipartFile("file", "example.jpg", MediaType.IMAGE_JPEG.toString(), "file content".getBytes());
-        Funko funko = new Funko(); // Debes crear una instancia de Funko adecuada aquí
+        Categoria categoria2 = new Categoria(2L, "DISNEY", LocalDate.now(), LocalDate.now());
+        Funko funko =new Funko(1L, "Funko1", 10.29,3 ,"Categoria1", categoria2, LocalDate.now(), LocalDate.now());
 
         when(funkoService.findById(id)).thenReturn(funko);
         when(storageService.store(file)).thenReturn("stored_filename");
@@ -119,7 +120,7 @@ class StorageControllerTest {
 
         // Act and Assert
         mockMvc.perform(MockMvcRequestBuilders
-                        .multipart("/storage/imagen/" + id)
+                        .multipart("/storage/imagen/" + id) // Utiliza multipart en lugar de fileUpload
                         .file(file)
                         .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(MockMvcResultMatchers.status().isOk());
@@ -127,6 +128,7 @@ class StorageControllerTest {
         assertEquals("http://example.com/stored_filename", funko.getImagen());
         verify(funkoService, times(1)).update(eq(id), any(FunkodtoUpdated.class));
     }
+
 
     @Test
     void testNuevoProductoEmptyFile() throws Exception {
