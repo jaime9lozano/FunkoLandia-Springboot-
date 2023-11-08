@@ -47,7 +47,7 @@ class FunkoControladorTest {
     @Autowired
     private JacksonTester<FunkodtoUpdated> jsonProductoUpdateDto;
     @Autowired
-    public void ProductosRestControllerTest(FunkoService funkoService) {
+    public FunkoControladorTest(FunkoService funkoService) {
         this.funkoService = funkoService;
     }
     @Test
@@ -348,6 +348,4 @@ class FunkoControladorTest {
         assertEquals(404, response.getStatus());
         verify(funkoService, times(1)).DeleteById(productId);
     }
-
-
 }

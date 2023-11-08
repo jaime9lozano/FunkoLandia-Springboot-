@@ -29,4 +29,18 @@ class CategoriaRepositoryTest {
                 () -> assertEquals(1L, categoria.getId())
         );
     }
+    @Test
+    void existsProductoById() {
+        var res = entityManager.merge(categoria1);
+        entityManager.flush();
+
+        boolean exists = repository.existsProductoById(res.getId());
+
+        assertTrue(exists);
+    }
+    @Test
+    void existsProductoById_NotExists() {
+        boolean exists = repository.existsProductoById(999L);
+        assertFalse(exists);
+    }
 }
