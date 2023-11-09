@@ -15,6 +15,7 @@ import jaime.funkoext2.dto.FunkodtoUpdated;
 import jaime.funkoext2.mapper.mapeador;
 import jaime.funkoext2.models.Categoria;
 import jaime.funkoext2.models.Funko;
+import jaime.funkoext2.page.PageResponse;
 import jaime.funkoext2.repository.CategoriaRepository;
 import jaime.funkoext2.repository.FunkoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

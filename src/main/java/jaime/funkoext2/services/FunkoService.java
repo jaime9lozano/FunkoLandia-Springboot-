@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import jaime.funkoext2.dto.Funkodto;
 import jaime.funkoext2.dto.FunkodtoUpdated;
 import jaime.funkoext2.models.Funko;
+import jaime.funkoext2.page.PageResponse;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
