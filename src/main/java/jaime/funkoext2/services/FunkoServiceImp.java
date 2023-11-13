@@ -54,7 +54,7 @@ public class FunkoServiceImp implements FunkoService {
     @Override
     public Page<Funko> findall(Optional<String> nombre, Optional <Double> preciomax, Optional<Double> preciomin, Optional<Integer> cantidadmax, Optional<Integer> cantidadmin, Optional<String> imagen, Pageable pageable) {
         Specification<Funko> specNombreFunko = (root, query, criteriaBuilder) ->
-                nombre.map(m -> criteriaBuilder.like(criteriaBuilder.lower(root.get("marca")), "%" + m.toLowerCase() + "%"))
+                nombre.map(m -> criteriaBuilder.like(criteriaBuilder.lower(root.get("nombre")), "%" + m.toLowerCase() + "%"))
                         .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
         Specification<Funko> specPrecioMaxFunko = (root, query, criteriaBuilder) ->
                 preciomax.map(p -> criteriaBuilder.lessThanOrEqualTo(root.get("precio"), p))
@@ -63,13 +63,13 @@ public class FunkoServiceImp implements FunkoService {
                 preciomin.map(p -> criteriaBuilder.greaterThanOrEqualTo(root.get("precio"), p))
                         .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
         Specification<Funko> specCantMaxFunko = (root, query, criteriaBuilder) ->
-                cantidadmax.map(p -> criteriaBuilder.lessThanOrEqualTo(root.get("precio"), p))
+                cantidadmax.map(p -> criteriaBuilder.lessThanOrEqualTo(root.get("cantidad"), p))
                         .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
         Specification<Funko> specCantMinFunko = (root, query, criteriaBuilder) ->
-                cantidadmin.map(p -> criteriaBuilder.greaterThanOrEqualTo(root.get("precio"), p))
+                cantidadmin.map(p -> criteriaBuilder.greaterThanOrEqualTo(root.get("cantidad"), p))
                         .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
         Specification<Funko> specImagenFunko = (root, query, criteriaBuilder) ->
-                imagen.map(m -> criteriaBuilder.like(criteriaBuilder.lower(root.get("marca")), "%" + m.toLowerCase() + "%"))
+                imagen.map(m -> criteriaBuilder.like(criteriaBuilder.lower(root.get("imagen")), "%" + m.toLowerCase() + "%"))
                         .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
         Specification<Funko> criterio = Specification.where(specNombreFunko)
                 .and(specPrecioMaxFunko)
