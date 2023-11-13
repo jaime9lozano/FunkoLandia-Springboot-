@@ -15,7 +15,6 @@ import jaime.funkoext2.dto.FunkodtoUpdated;
 import jaime.funkoext2.mapper.mapeador;
 import jaime.funkoext2.models.Categoria;
 import jaime.funkoext2.models.Funko;
-import jaime.funkoext2.page.PageResponse;
 import jaime.funkoext2.repository.CategoriaRepository;
 import jaime.funkoext2.repository.FunkoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +22,11 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -51,8 +52,32 @@ public class FunkoServiceImp implements FunkoService {
         webSocketService = webSocketConfig.webSocketFunkosHandler();
     }
     @Override
-    public List<Funko> findall() {
-        return funkoRepository.findAll();
+    public Page<Funko> findall(Optional<String> nombre, Optional <Double> preciomax, Optional<Double> preciomin, Optional<Integer> cantidadmax, Optional<Integer> cantidadmin, Optional<String> imagen, Pageable pageable) {
+        Specification<Funko> specNombreFunko = (root, query, criteriaBuilder) ->
+                nombre.map(m -> criteriaBuilder.like(criteriaBuilder.lower(root.get("marca")), "%" + m.toLowerCase() + "%"))
+                        .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
+        Specification<Funko> specPrecioMaxFunko = (root, query, criteriaBuilder) ->
+                preciomax.map(p -> criteriaBuilder.lessThanOrEqualTo(root.get("precio"), p))
+                        .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
+        Specification<Funko> specPrecioMinFunko = (root, query, criteriaBuilder) ->
+                preciomin.map(p -> criteriaBuilder.greaterThanOrEqualTo(root.get("precio"), p))
+                        .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
+        Specification<Funko> specCantMaxFunko = (root, query, criteriaBuilder) ->
+                cantidadmax.map(p -> criteriaBuilder.lessThanOrEqualTo(root.get("precio"), p))
+                        .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
+        Specification<Funko> specCantMinFunko = (root, query, criteriaBuilder) ->
+                cantidadmin.map(p -> criteriaBuilder.greaterThanOrEqualTo(root.get("precio"), p))
+                        .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
+        Specification<Funko> specImagenFunko = (root, query, criteriaBuilder) ->
+                imagen.map(m -> criteriaBuilder.like(criteriaBuilder.lower(root.get("marca")), "%" + m.toLowerCase() + "%"))
+                        .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
+        Specification<Funko> criterio = Specification.where(specNombreFunko)
+                .and(specPrecioMaxFunko)
+                .and(specPrecioMinFunko)
+                .and(specCantMaxFunko)
+                .and(specCantMinFunko)
+                .and(specImagenFunko);
+        return funkoRepository.findAll(criterio, pageable);
     }
 
 

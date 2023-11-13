@@ -14,9 +14,13 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @CacheConfig(cacheNames = {"categorias"})
@@ -28,8 +32,12 @@ public class CategoriaServiceImp implements CategoriaService {
         this.categoriaRepository = categoriaRepository;
     }
     @Override
-    public List<Categoria> findall() {
-        return categoriaRepository.findAll();
+    public Page<Categoria> findall(Optional<String> categoria, Pageable pageable) {
+        Specification<Categoria> specCategoria = (root, query, criteriaBuilder) ->
+                categoria.map(m -> criteriaBuilder.like(criteriaBuilder.lower(root.get("categoria")), "%" + m.toLowerCase() + "%"))
+                        .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
+        Specification<Categoria> criterio = Specification.where(specCategoria);
+        return categoriaRepository.findAll(criterio, pageable);
     }
 
     @Override

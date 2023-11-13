@@ -6,7 +6,11 @@ import jaime.funkoext2.dto.Funkodto;
 import jaime.funkoext2.dto.FunkodtoUpdated;
 import jaime.funkoext2.models.Funko;
 import jaime.funkoext2.services.FunkoService;
+import jaime.funkoext2.util.PageResponse;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class FunkoControlador {
@@ -27,8 +32,22 @@ public class FunkoControlador {
         this.funkoServicio = funkoServicio;
     }
     @GetMapping("/funkos")
-    public ResponseEntity<List<Funko>> getProducts() {
-        return ResponseEntity.ok(funkoServicio.findall());
+    public ResponseEntity<PageResponse<Funko>> getProducts(
+            @RequestParam(required = false) Optional<String> nombre,
+            @RequestParam(required = false) Optional<Double> preciomax,
+            @RequestParam(required = false) Optional<Double> preciomin,
+            @RequestParam(required = false) Optional<Integer> cantidadmax,
+            @RequestParam(required = false) Optional<Integer> cantidadmin,
+            @RequestParam(required = false) Optional<String> imagen,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction
+    ) {
+        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Page<Funko> pageResult = funkoServicio.findall(nombre, preciomax, preciomin, cantidadmax, cantidadmin, imagen, PageRequest.of(page, size, sort));
+        return ResponseEntity.ok()
+                .body(PageResponse.of(pageResult, sortBy, direction));
     }
 
     @GetMapping("/funkos/{id}")

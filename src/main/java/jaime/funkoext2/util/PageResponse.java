@@ -1,4 +1,4 @@
-package jaime.funkoext2.page;
+package jaime.funkoext2.util;
 
 import org.springframework.data.domain.Page;
 

@@ -3,12 +3,13 @@ package jaime.funkoext2.services;
 import jaime.funkoext2.dto.Categoriadto;
 import jaime.funkoext2.dto.CategoriadtoUpdated;
 import jaime.funkoext2.models.Categoria;
-import jaime.funkoext2.models.Funko;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface CategoriaService {
-    List<Categoria> findall();
+    Page<Categoria> findall(Optional<String> categoria, Pageable pageable);
     Categoria findByCategoria(String name);
     Categoria findById(Long id);
     Categoria save(Categoriadto categoriadto);
