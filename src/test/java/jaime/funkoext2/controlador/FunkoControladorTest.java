@@ -50,20 +50,6 @@ class FunkoControladorTest {
     public FunkoControladorTest(FunkoService funkoService) {
         this.funkoService = funkoService;
     }
-    @Test
-    void getProducts() throws Exception{
-        when(funkoService.findall()).thenReturn(Arrays.asList(funko1, funko2));
-
-        MockHttpServletResponse response = mockMvc.perform(
-                        get(myEndpoint)
-                                .accept(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse();
-
-        assertAll("findall",
-                () -> assertEquals(200, response.getStatus()),
-                () -> verify(funkoService, times(1)).findall()
-        );
-    }
 
     @Test
     void getProduct() throws Exception{

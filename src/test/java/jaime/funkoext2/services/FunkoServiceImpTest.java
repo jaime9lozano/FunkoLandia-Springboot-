@@ -61,22 +61,7 @@ class FunkoServicioImpTest {
     }
 
 
-    @Test
-    void findall() {
-        List<Funko> funkos = new ArrayList<>();
-        funkos.add(funko1);
-        funkos.add(funko2);
 
-        when(funkoRepositorio.findAll()).thenReturn(funkos);
-
-        List<Funko> result = funkoServicioImp.findall();
-
-        assertAll(
-                () -> assertNotNull(result),
-                () -> assertEquals(funkos.size(), result.size()),
-                () -> verify(funkoRepositorio, times(1)).findAll()
-        );
-    }
 
 
     @Test

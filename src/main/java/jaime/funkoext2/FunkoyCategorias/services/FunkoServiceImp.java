@@ -139,7 +139,7 @@ public class FunkoServiceImp implements FunkoService {
             throw new FunkoNoEncontrado(id);
         }
     }
-    void onChange(Notificacion.Tipo tipo, Funko data) {
+    public void onChange(Notificacion.Tipo tipo, Funko data) {
 
         if (webSocketService == null) {
             webSocketService = this.webSocketConfig.webSocketFunkosHandler();

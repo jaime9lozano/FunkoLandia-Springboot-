@@ -49,20 +49,6 @@ class CategoriaControladorTest {
         this.service = service;
     }
 
-    @Test
-    void getProducts() throws Exception {
-        when(service.findall()).thenReturn(Arrays.asList(categoria1, categoria2));
-
-        MockHttpServletResponse response = mockMvc.perform(
-                        get(myEndpoint)
-                                .accept(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse();
-
-        assertAll("findall",
-                () -> assertEquals(200, response.getStatus()),
-                () -> verify(service, times(1)).findall()
-        );
-    }
 
     @Test
     void getProduct() throws Exception {

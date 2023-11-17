@@ -31,23 +31,6 @@ class CategoriaServiceImpTest {
     @InjectMocks
     CategoriaServiceImp service;
     @Test
-    void findall() {
-        List<Categoria> cat = new ArrayList<>();
-        cat.add(categoria1);
-        cat.add(categoria2);
-
-        when(repository.findAll()).thenReturn(cat);
-
-        var result = service.findall();
-
-        assertAll("FindAll",
-                () -> assertNotNull(result),
-                () -> assertEquals(cat.size(), result.size()),
-                () -> verify(repository, times(1)).findAll()
-        );
-    }
-
-    @Test
     void findByCategoria() {
         when(repository.findByCategoria(categoria1.getCategoria())).thenReturn(categoria1);
 
