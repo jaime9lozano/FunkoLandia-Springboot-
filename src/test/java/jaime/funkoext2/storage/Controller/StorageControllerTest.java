@@ -1,15 +1,15 @@
 package jaime.funkoext2.storage.Controller;
 
-import jaime.funkoext2.dto.FunkodtoUpdated;
-import jaime.funkoext2.models.Categoria;
-import jaime.funkoext2.models.Funko;
-import jaime.funkoext2.services.FunkoService;
-import jaime.funkoext2.storage.Services.StorageService;
+import jaime.funkoext2.FunkoyCategorias.dto.FunkodtoUpdated;
+import jaime.funkoext2.FunkoyCategorias.models.Categoria;
+import jaime.funkoext2.FunkoyCategorias.models.Funko;
+import jaime.funkoext2.FunkoyCategorias.services.FunkoService;
+import jaime.funkoext2.FunkoyCategorias.storage.Controller.StorageController;
+import jaime.funkoext2.FunkoyCategorias.storage.Services.StorageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;

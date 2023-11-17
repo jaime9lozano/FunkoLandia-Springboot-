@@ -1,12 +1,13 @@
 package jaime.funkoext2.services;
 
-import jaime.funkoext2.Exceptions.CategoriaConflict;
-import jaime.funkoext2.Exceptions.CategoriaNoEncontrada;
-import jaime.funkoext2.dto.Categoriadto;
-import jaime.funkoext2.dto.CategoriadtoUpdated;
-import jaime.funkoext2.mapper.mapeador;
-import jaime.funkoext2.models.Categoria;
-import jaime.funkoext2.repository.CategoriaRepository;
+import jaime.funkoext2.FunkoyCategorias.Exceptions.CategoriaConflict;
+import jaime.funkoext2.FunkoyCategorias.Exceptions.CategoriaNoEncontrada;
+import jaime.funkoext2.FunkoyCategorias.dto.Categoriadto;
+import jaime.funkoext2.FunkoyCategorias.dto.CategoriadtoUpdated;
+import jaime.funkoext2.FunkoyCategorias.mapper.mapeador;
+import jaime.funkoext2.FunkoyCategorias.models.Categoria;
+import jaime.funkoext2.FunkoyCategorias.repository.CategoriaRepository;
+import jaime.funkoext2.FunkoyCategorias.services.CategoriaServiceImp;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

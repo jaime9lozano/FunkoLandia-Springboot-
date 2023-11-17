@@ -1,11 +1,11 @@
 package jaime.funkoext2.controlador;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jaime.funkoext2.Exceptions.CategoriaNoEncontrada;
-import jaime.funkoext2.dto.Categoriadto;
-import jaime.funkoext2.dto.CategoriadtoUpdated;
-import jaime.funkoext2.models.Categoria;
-import jaime.funkoext2.services.CategoriaService;
+import jaime.funkoext2.FunkoyCategorias.Exceptions.CategoriaNoEncontrada;
+import jaime.funkoext2.FunkoyCategorias.dto.Categoriadto;
+import jaime.funkoext2.FunkoyCategorias.dto.CategoriadtoUpdated;
+import jaime.funkoext2.FunkoyCategorias.models.Categoria;
+import jaime.funkoext2.FunkoyCategorias.services.CategoriaService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
