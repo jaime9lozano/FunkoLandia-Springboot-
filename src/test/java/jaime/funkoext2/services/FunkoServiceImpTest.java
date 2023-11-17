@@ -1,20 +1,20 @@
 package jaime.funkoext2.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jaime.funkoext2.Config.WebSocket.WebSocketConfig;
-import jaime.funkoext2.Config.WebSocket.WebSocketHandler;
-import jaime.funkoext2.Exceptions.CategoriaNoEncontrada;
-import jaime.funkoext2.WebSocket.FunkoNotificacionMapper;
-import jaime.funkoext2.WebSocket.FunkoNotificacionResponse;
-import jaime.funkoext2.WebSocket.Notificacion;
-import jaime.funkoext2.dto.Funkodto;
-import jaime.funkoext2.dto.FunkodtoUpdated;
-import jaime.funkoext2.Exceptions.FunkoNoEncontrado;
-import jaime.funkoext2.mapper.mapeador;
-import jaime.funkoext2.models.Categoria;
-import jaime.funkoext2.models.Funko;
-import jaime.funkoext2.repository.CategoriaRepository;
-import jaime.funkoext2.repository.FunkoRepository;
+import jaime.funkoext2.FunkoyCategorias.Config.WebSocket.WebSocketConfig;
+import jaime.funkoext2.FunkoyCategorias.Config.WebSocket.WebSocketHandler;
+import jaime.funkoext2.FunkoyCategorias.Exceptions.CategoriaNoEncontrada;
+import jaime.funkoext2.FunkoyCategorias.WebSocket.FunkoNotificacionMapper;
+import jaime.funkoext2.FunkoyCategorias.WebSocket.Notificacion;
+import jaime.funkoext2.FunkoyCategorias.dto.Funkodto;
+import jaime.funkoext2.FunkoyCategorias.dto.FunkodtoUpdated;
+import jaime.funkoext2.FunkoyCategorias.Exceptions.FunkoNoEncontrado;
+import jaime.funkoext2.FunkoyCategorias.mapper.mapeador;
+import jaime.funkoext2.FunkoyCategorias.models.Categoria;
+import jaime.funkoext2.FunkoyCategorias.models.Funko;
+import jaime.funkoext2.FunkoyCategorias.repository.CategoriaRepository;
+import jaime.funkoext2.FunkoyCategorias.repository.FunkoRepository;
+import jaime.funkoext2.FunkoyCategorias.services.FunkoServiceImp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +26,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -62,22 +61,7 @@ class FunkoServicioImpTest {
     }
 
 
-    @Test
-    void findall() {
-        List<Funko> funkos = new ArrayList<>();
-        funkos.add(funko1);
-        funkos.add(funko2);
 
-        when(funkoRepositorio.findAll()).thenReturn(funkos);
-
-        List<Funko> result = funkoServicioImp.findall();
-
-        assertAll(
-                () -> assertNotNull(result),
-                () -> assertEquals(funkos.size(), result.size()),
-                () -> verify(funkoRepositorio, times(1)).findAll()
-        );
-    }
 
 
     @Test

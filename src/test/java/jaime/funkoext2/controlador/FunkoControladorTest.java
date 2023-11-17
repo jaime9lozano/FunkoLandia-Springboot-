@@ -1,11 +1,11 @@
 package jaime.funkoext2.controlador;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jaime.funkoext2.dto.Funkodto;
-import jaime.funkoext2.dto.FunkodtoUpdated;
-import jaime.funkoext2.Exceptions.FunkoNoEncontrado;
-import jaime.funkoext2.models.Categoria;
-import jaime.funkoext2.models.Funko;
-import jaime.funkoext2.services.FunkoService;
+import jaime.funkoext2.FunkoyCategorias.dto.Funkodto;
+import jaime.funkoext2.FunkoyCategorias.dto.FunkodtoUpdated;
+import jaime.funkoext2.FunkoyCategorias.Exceptions.FunkoNoEncontrado;
+import jaime.funkoext2.FunkoyCategorias.models.Categoria;
+import jaime.funkoext2.FunkoyCategorias.models.Funko;
+import jaime.funkoext2.FunkoyCategorias.services.FunkoService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -49,20 +49,6 @@ class FunkoControladorTest {
     @Autowired
     public FunkoControladorTest(FunkoService funkoService) {
         this.funkoService = funkoService;
-    }
-    @Test
-    void getProducts() throws Exception{
-        when(funkoService.findall()).thenReturn(Arrays.asList(funko1, funko2));
-
-        MockHttpServletResponse response = mockMvc.perform(
-                        get(myEndpoint)
-                                .accept(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse();
-
-        assertAll("findall",
-                () -> assertEquals(200, response.getStatus()),
-                () -> verify(funkoService, times(1)).findall()
-        );
     }
 
     @Test

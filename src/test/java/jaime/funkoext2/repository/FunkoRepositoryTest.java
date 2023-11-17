@@ -1,7 +1,8 @@
 package jaime.funkoext2.repository;
 
-import jaime.funkoext2.models.Categoria;
-import jaime.funkoext2.models.Funko;
+import jaime.funkoext2.FunkoyCategorias.models.Categoria;
+import jaime.funkoext2.FunkoyCategorias.models.Funko;
+import jaime.funkoext2.FunkoyCategorias.repository.FunkoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

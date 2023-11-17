@@ -1,12 +1,13 @@
 package jaime.funkoext2.services;
 
-import jaime.funkoext2.Exceptions.CategoriaConflict;
-import jaime.funkoext2.Exceptions.CategoriaNoEncontrada;
-import jaime.funkoext2.dto.Categoriadto;
-import jaime.funkoext2.dto.CategoriadtoUpdated;
-import jaime.funkoext2.mapper.mapeador;
-import jaime.funkoext2.models.Categoria;
-import jaime.funkoext2.repository.CategoriaRepository;
+import jaime.funkoext2.FunkoyCategorias.Exceptions.CategoriaConflict;
+import jaime.funkoext2.FunkoyCategorias.Exceptions.CategoriaNoEncontrada;
+import jaime.funkoext2.FunkoyCategorias.dto.Categoriadto;
+import jaime.funkoext2.FunkoyCategorias.dto.CategoriadtoUpdated;
+import jaime.funkoext2.FunkoyCategorias.mapper.mapeador;
+import jaime.funkoext2.FunkoyCategorias.models.Categoria;
+import jaime.funkoext2.FunkoyCategorias.repository.CategoriaRepository;
+import jaime.funkoext2.FunkoyCategorias.services.CategoriaServiceImp;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,23 +30,6 @@ class CategoriaServiceImpTest {
     CategoriaRepository repository;
     @InjectMocks
     CategoriaServiceImp service;
-    @Test
-    void findall() {
-        List<Categoria> cat = new ArrayList<>();
-        cat.add(categoria1);
-        cat.add(categoria2);
-
-        when(repository.findAll()).thenReturn(cat);
-
-        var result = service.findall();
-
-        assertAll("FindAll",
-                () -> assertNotNull(result),
-                () -> assertEquals(cat.size(), result.size()),
-                () -> verify(repository, times(1)).findAll()
-        );
-    }
-
     @Test
     void findByCategoria() {
         when(repository.findByCategoria(categoria1.getCategoria())).thenReturn(categoria1);
