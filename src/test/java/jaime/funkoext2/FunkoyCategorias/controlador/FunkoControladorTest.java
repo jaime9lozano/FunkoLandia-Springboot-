@@ -1,4 +1,6 @@
-package jaime.funkoext2.controlador;
+package jaime.funkoext2.FunkoyCategorias.controlador;
+
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jaime.funkoext2.FunkoyCategorias.dto.Funkodto;
 import jaime.funkoext2.FunkoyCategorias.dto.FunkodtoUpdated;
@@ -6,6 +8,7 @@ import jaime.funkoext2.FunkoyCategorias.Exceptions.FunkoNoEncontrado;
 import jaime.funkoext2.FunkoyCategorias.models.Categoria;
 import jaime.funkoext2.FunkoyCategorias.models.Funko;
 import jaime.funkoext2.FunkoyCategorias.services.FunkoService;
+import jaime.funkoext2.FunkoyCategorias.util.PageResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -15,12 +18,17 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -51,6 +59,130 @@ class FunkoControladorTest {
         this.funkoService = funkoService;
     }
 
+    @Test
+    void getProducts_NoParams() throws Exception {
+        List<Funko> clientsList = List.of(funko1, funko2);
+        Page<Funko> page = new PageImpl<>(clientsList);
+
+        when(funkoService.findall(any(Optional.class), any(Optional.class), any(Optional.class), any(Optional.class), any(Optional.class), any(Optional.class) ,any(PageRequest.class))).thenReturn(page);
+
+        MockHttpServletResponse response = mockMvc.perform(
+                        get(myEndpoint)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        assertAll("findall",
+                () -> assertEquals(200, response.getStatus())
+        );
+    }
+
+    @Test
+    void getProducts_Name() throws Exception {
+        List<Funko> clientsList = List.of(funko1, funko2);
+        Page<Funko> page = new PageImpl<>(clientsList);
+        Optional<String> name = Optional.of("Funko1");
+
+        when(funkoService.findall(eq(name), any(Optional.class), any(Optional.class), any(Optional.class), any(Optional.class), any(Optional.class) ,any(PageRequest.class))).thenReturn(page);
+
+        MockHttpServletResponse response = mockMvc.perform(
+                        get(myEndpoint+"?nombre=Funko1")
+                                .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        assertAll("findall",
+                () -> assertEquals(200, response.getStatus())
+        );
+    }
+
+    @Test
+    void getProducts_PrecioMax() throws Exception {
+        List<Funko> clientsList = List.of(funko1, funko2);
+        Page<Funko> page = new PageImpl<>(clientsList);
+        Optional<Double> precioMax = Optional.of(10.29);
+
+        when(funkoService.findall(any(Optional.class), eq(precioMax), any(Optional.class), any(Optional.class), any(Optional.class), any(Optional.class) ,any(PageRequest.class))).thenReturn(page);
+
+        MockHttpServletResponse response = mockMvc.perform(
+                        get(myEndpoint+"?preciomax=10.29")
+                                .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        assertAll("findall",
+                () -> assertEquals(200, response.getStatus())
+        );
+    }
+
+    @Test
+    void getProducts_PrecioMin() throws Exception {
+        List<Funko> clientsList = List.of(funko1, funko2);
+        Page<Funko> page = new PageImpl<>(clientsList);
+        Optional<Double> precioMin = Optional.of(10.29);
+
+        when(funkoService.findall(any(Optional.class), any(Optional.class), eq(precioMin), any(Optional.class), any(Optional.class), any(Optional.class) ,any(PageRequest.class))).thenReturn(page);
+
+        MockHttpServletResponse response = mockMvc.perform(
+                        get(myEndpoint+"?preciomin=10.29")
+                                .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        assertAll("findall",
+                () -> assertEquals(200, response.getStatus())
+        );
+    }
+
+    @Test
+    void getProducts_CantidadMax() throws Exception {
+        List<Funko> clientsList = List.of(funko1, funko2);
+        Page<Funko> page = new PageImpl<>(clientsList);
+        Optional<Integer> cantMax = Optional.of(3);
+
+        when(funkoService.findall(any(Optional.class), any(Optional.class), any(Optional.class), eq(cantMax), any(Optional.class), any(Optional.class) ,any(PageRequest.class))).thenReturn(page);
+
+        MockHttpServletResponse response = mockMvc.perform(
+                        get(myEndpoint+"?cantidadmax=3")
+                                .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        assertAll("findall",
+                () -> assertEquals(200, response.getStatus())
+        );
+    }
+
+    @Test
+    void getProducts_CantidadMin() throws Exception {
+        List<Funko> clientsList = List.of(funko1, funko2);
+        Page<Funko> page = new PageImpl<>(clientsList);
+        Optional<Integer> cantMin = Optional.of(3);
+
+        when(funkoService.findall(any(Optional.class), any(Optional.class), any(Optional.class), any(Optional.class), eq(cantMin), any(Optional.class) ,any(PageRequest.class))).thenReturn(page);
+
+        MockHttpServletResponse response = mockMvc.perform(
+                        get(myEndpoint+"?cantidadmin=3")
+                                .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        assertAll("findall",
+                () -> assertEquals(200, response.getStatus())
+        );
+    }
+
+    @Test
+    void getProducts_imagen() throws Exception {
+        List<Funko> clientsList = List.of(funko1, funko2);
+        Page<Funko> page = new PageImpl<>(clientsList);
+        Optional<String> imagen = Optional.of("imagen1");
+
+        when(funkoService.findall(any(Optional.class), any(Optional.class), any(Optional.class), any(Optional.class), any(Optional.class), eq(imagen) ,any(PageRequest.class))).thenReturn(page);
+
+        MockHttpServletResponse response = mockMvc.perform(
+                        get(myEndpoint+"?imagen=imagen1")
+                                .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        assertAll("findall",
+                () -> assertEquals(200, response.getStatus())
+        );
+    }
     @Test
     void getProduct() throws Exception{
         when(funkoService.findById(1L)).thenReturn(funko1);

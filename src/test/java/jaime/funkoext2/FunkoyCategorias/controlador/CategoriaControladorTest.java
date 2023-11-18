@@ -1,11 +1,13 @@
-package jaime.funkoext2.controlador;
+package jaime.funkoext2.FunkoyCategorias.controlador;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
 import jaime.funkoext2.FunkoyCategorias.Exceptions.CategoriaNoEncontrada;
 import jaime.funkoext2.FunkoyCategorias.dto.Categoriadto;
 import jaime.funkoext2.FunkoyCategorias.dto.CategoriadtoUpdated;
 import jaime.funkoext2.FunkoyCategorias.models.Categoria;
 import jaime.funkoext2.FunkoyCategorias.services.CategoriaService;
+import jaime.funkoext2.FunkoyCategorias.util.PageResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -15,6 +17,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,6 +29,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -49,7 +56,40 @@ class CategoriaControladorTest {
         this.service = service;
     }
 
+    @Test
+    void getProducts_NoParams() throws Exception {
+        List<Categoria> clientsList = List.of(categoria1, categoria2);
+        Page<Categoria> page = new PageImpl<>(clientsList);
 
+        when(service.findall(any(Optional.class), any(PageRequest.class))).thenReturn(page);
+
+        MockHttpServletResponse response = mockMvc.perform(
+                        get(myEndpoint)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        assertAll("findall",
+                () -> assertEquals(200, response.getStatus())
+        );
+    }
+
+    @Test
+    void getProducts_Cat() throws Exception {
+        List<Categoria> clientsList = List.of(categoria1, categoria2);
+        Page<Categoria> page = new PageImpl<>(clientsList);
+        Optional<String> cat = Optional.of("MARVEL");
+
+        when(service.findall(eq(cat), any(PageRequest.class))).thenReturn(page);
+
+        MockHttpServletResponse response = mockMvc.perform(
+                        get(myEndpoint+"?categoria=MARVEL")
+                                .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        assertAll("findall",
+                () -> assertEquals(200, response.getStatus())
+        );
+    }
     @Test
     void getProduct() throws Exception {
         when(service.findById(1L)).thenReturn(categoria1);

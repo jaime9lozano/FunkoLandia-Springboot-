@@ -1,4 +1,4 @@
-package jaime.funkoext2.repository;
+package jaime.funkoext2.FunkoyCategorias.repository;
 
 import jaime.funkoext2.FunkoyCategorias.models.Categoria;
 import jaime.funkoext2.FunkoyCategorias.repository.CategoriaRepository;

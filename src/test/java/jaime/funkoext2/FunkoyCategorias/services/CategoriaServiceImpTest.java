@@ -1,4 +1,4 @@
-package jaime.funkoext2.services;
+package jaime.funkoext2.FunkoyCategorias.services;
 
 import jaime.funkoext2.FunkoyCategorias.Exceptions.CategoriaConflict;
 import jaime.funkoext2.FunkoyCategorias.Exceptions.CategoriaNoEncontrada;
@@ -13,9 +13,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +33,36 @@ class CategoriaServiceImpTest {
     CategoriaRepository repository;
     @InjectMocks
     CategoriaServiceImp service;
+    @Test
+    void findall_noParam(){
+        List<Categoria> expectedClients = Arrays.asList(categoria1, categoria2);
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("id").ascending());
+        Page<Categoria> expectedPage = new PageImpl<>(expectedClients);
+        when(repository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(expectedPage);
+        Page<Categoria> actualPage = service.findall(Optional.empty(), pageable);
+        assertAll("findAll",
+                () -> assertNotNull(actualPage),
+                () -> assertFalse(actualPage.isEmpty()),
+                () -> assertTrue(actualPage.getTotalElements() > 0)
+        );
+        verify(repository, times(1)).findAll(any(Specification.class), any(Pageable.class));
+    }
+
+    @Test
+    void findall_ParamCat(){
+        List<Categoria> expectedClients = List.of(categoria1);
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("id").ascending());
+        Page<Categoria> expectedPage = new PageImpl<>(expectedClients);
+        Optional<String> categoria = Optional.of("MARVEL");
+        when(repository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(expectedPage);
+        Page<Categoria> actualPage = service.findall(categoria, pageable);
+        assertAll("findAll",
+                () -> assertNotNull(actualPage),
+                () -> assertFalse(actualPage.isEmpty()),
+                () -> assertTrue(actualPage.getTotalElements() > 0)
+        );
+        verify(repository, times(1)).findAll(any(Specification.class), any(Pageable.class));
+    }
     @Test
     void findByCategoria() {
         when(repository.findByCategoria(categoria1.getCategoria())).thenReturn(categoria1);
