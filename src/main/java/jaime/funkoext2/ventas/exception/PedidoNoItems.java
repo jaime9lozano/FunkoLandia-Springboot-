@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class PedidoNoItems extends PedidoException{
-    public PedidoNoItems(Long id){
+    public PedidoNoItems(String id){
         super("Pedido con id " + id + " no contiene items para ser procesado");
     }
 }
