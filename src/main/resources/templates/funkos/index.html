@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Funkos</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.6.2/css/bootstrap.min.css}">
+</head>
+<body>
+
+<div th:replace="~{funkos/header.html :: header}"></div>
+
+<div class="container">
+    <h1 th:text="${welcomeMessage}"></h1>
+    <form action="/funkos/" class="mb-3" method="get">
+        <div class="input-group">
+            <input class="form-control" id="search" name="search" th:value="${search}" type="text">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">Buscar</button>
+            </div>
+        </div>
+    </form>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Imagen</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="funko : ${funkosPage.content}">
+            <td th:text="${funko.id}"></td>
+            <td th:text="${funko.nombre}"></td>
+            <td th:text="${funko.precio}"></td>
+            <td th:text="${funko.cantidad}"></td>
+            <td>
+                <img alt="Imagen del funko" height="50" th:src="${funko.imagen}" width="50">
+            </td>
+            <td>
+                <a class="btn btn-primary btn-sm" th:href="@{/funkos/details/{id}(id=${funko.id})}">Detalles</a>
+                <a class="btn btn-secondary btn-sm" th:href="@{/funkos/update/{id}(id=${funko.id})}">Editar</a>
+                <a class="btn btn-info btn-sm" th:href="@{/funkos/update-image/{id}(id=${funko.id})}">Imagen</a>
+                <a class="btn btn-danger btn-sm" th:href="@{/funkos/delete/{id}(id=${funko.id})}">Eliminar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${funkosPage.first ? 'disabled' : ''}">
+                <a class="page-link"
+                   th:href="@{${funkosPage.first ? '#' : '/funkos/index'}(page=0, size=${funkosPage.size}, sort=${funkosPage.pageable.sort})}">&laquo;</a>
+            </li>
+            <li class="page-item" th:classappend="${funkosPage.first ? 'disabled' : ''}">
+                <a class="page-link"
+                   th:href="@{${funkosPage.first ? '#' : '/funkos/index'}(page=${funkosPage.number - 1}, size=${funkosPage.size}, sort=${funkosPage.pageable.sort})}">Anterior</a>
+            </li>
+            <li class="page-item" th:classappend="${funkosPage.last ? 'disabled' : ''}">
+                <a class="page-link"
+                   th:href="@{${funkosPage.last ? '#' : '/funkos/index'}(page=${funkosPage.number + 1}, size=${funkosPage.size}, sort=${funkosPage.pageable.sort})}">Siguiente</a>
+            </li>
+            <li class="page-item" th:classappend="${funkosPage.last ? 'disabled' : ''}">
+                <a class="page-link"
+                   th:href="@{${funkosPage.last ? '#' : '/funkos/index'}(page=${funkosPage.totalPages - 1}, size=${funkosPage.size}, sort=${funkosPage.pageable.sort})}">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+    <a class="btn btn-success" href="/funkos/create">Nuevo Producto</a>
+
+    <!-- Incluir el fragmento del footer -->
+    <p class="mt-4 text-center" style="font-size: smaller;">
+        <span>Nº de visitas: </span><span th:text="${numVisitas}"></span>
+        <span>, desde tu último login: </span>
+        <span th:text="${lastLoginDate}"></span>
+    </p>
+
+</div>
+
+<div th:replace="~{funkos/footer.html :: footer}"></div>
+
+<script th:src="@{/webjars/bootstrap/4.6.2/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
