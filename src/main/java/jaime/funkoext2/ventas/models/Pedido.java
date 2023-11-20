@@ -1,6 +1,7 @@
 package jaime.funkoext2.ventas.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.EntityListeners;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,11 +36,13 @@ public class Pedido {
     @NotNull(message = "El id del usuario no puede ser nulo")
     private Long idUsuario;
 
+
     @NotNull(message = "El id del cliente no puede ser nulo")
-    private Cliente cliente;
+    private  @Valid Cliente cliente;
+
 
     @NotNull(message = "El pedido debe tener al menos una línea de pedido")
-    private List<LineaPedido> lineasPedido;
+    private List<@Valid LineaPedido> lineasPedido;
     // No hace falta pasarlo, lo calculamos, pero si lo pasamos lo usamos
 
     @Builder.Default()

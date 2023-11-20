@@ -1,5 +1,6 @@
 package jaime.funkoext2.ventas.models;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,7 +16,8 @@ public record Cliente(
         @NotBlank(message = "El teléfono no puede estar vacío")
         String telefono,
 
+
         @NotNull(message = "La dirección no puede ser nula")
-        Direccion direccion
+        @Valid Direccion direccion
 ) {
 }
