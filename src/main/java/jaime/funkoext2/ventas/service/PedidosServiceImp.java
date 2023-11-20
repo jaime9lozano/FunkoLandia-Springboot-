@@ -70,6 +70,7 @@ public class PedidosServiceImp implements PedidosService{
     @CachePut
     public Pedido update(ObjectId idPedido, Pedido pedido) {
         var pedidoToUpdate = pedidosRepository.findById(idPedido).orElseThrow(() -> new PedidoNotFound(idPedido.toHexString()));
+        pedido.setId(idPedido);
 
         // Devolvemos el stock de los productos
         returnStockPedidos(pedido);
