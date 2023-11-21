@@ -33,6 +33,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("com.h2database:h2")
     annotationProcessor("org.projectlombok:lombok")
+    implementation("org.webjars:bootstrap:4.6.2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

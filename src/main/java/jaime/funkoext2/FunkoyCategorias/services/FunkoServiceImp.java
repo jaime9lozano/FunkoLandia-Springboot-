@@ -17,6 +17,7 @@ import jaime.funkoext2.FunkoyCategorias.WebSocket.Notificacion;
 import jaime.funkoext2.FunkoyCategorias.dto.Funkodto;
 import jaime.funkoext2.FunkoyCategorias.dto.FunkodtoUpdated;
 import jaime.funkoext2.FunkoyCategorias.repository.CategoriaRepository;
+import jaime.funkoext2.FunkoyCategorias.storage.Services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -26,7 +27,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -37,14 +41,16 @@ public class FunkoServiceImp implements FunkoService {
     FunkoRepository funkoRepository;
     CategoriaRepository categoriaRepository;
     mapeador map = new mapeador();
+    StorageService storageService;
 
     private final WebSocketConfig webSocketConfig;
     private final ObjectMapper mapper;
     private final FunkoNotificacionMapper funkoNotificacionMapper;
     private WebSocketHandler webSocketService;
     @Autowired
-    public FunkoServiceImp(FunkoRepository funkoRepository,CategoriaRepository categoriaRepository, WebSocketConfig webSocketConfig, FunkoNotificacionMapper funkoNotificacionMapper) {
+    public FunkoServiceImp(FunkoRepository funkoRepository,CategoriaRepository categoriaRepository, WebSocketConfig webSocketConfig, FunkoNotificacionMapper funkoNotificacionMapper, StorageService sto) {
         this.webSocketConfig = webSocketConfig;
+        this.storageService = sto;
         mapper = new ObjectMapper();
         this.funkoNotificacionMapper = funkoNotificacionMapper;
         this.funkoRepository = funkoRepository;
@@ -107,6 +113,7 @@ public class FunkoServiceImp implements FunkoService {
 
     @Override
     @CachePut
+    @Transactional
     public Funko update(Long id, FunkodtoUpdated funkoUpdated) {
         Optional<Funko> existingFunko = funkoRepository.findById(id);
         Categoria categoria = null;
@@ -129,6 +136,7 @@ public class FunkoServiceImp implements FunkoService {
 
     @Override
     @CacheEvict
+    @Transactional
     public boolean DeleteById(Long id) {
         Optional<Funko> existingFunko = funkoRepository.findById(id);
         if (existingFunko.isPresent()) {
@@ -138,6 +146,33 @@ public class FunkoServiceImp implements FunkoService {
         }else {
             throw new FunkoNoEncontrado(id);
         }
+    }
+    @Override
+    @Transactional
+    @CachePut
+    public Funko updateImage(Long id, MultipartFile image, Boolean withUrl){
+        var clientActual = funkoRepository.findById(id).orElseThrow(() -> new FunkoNoEncontrado(id));
+
+        if (clientActual.getImagen() != null && !clientActual.getImagen().equals("https://via.placeholder.com/150")) {
+            storageService.delete(clientActual.getImagen());
+        }
+
+        String imageStored = storageService.store(image);
+        String imageUrl = !withUrl ? imageStored : storageService.getUrl(imageStored);
+        var clientActualized = Funko.builder()
+                .id(clientActual.getId())
+                .nombre(clientActual.getNombre())
+                .precio(clientActual.getPrecio())
+                .cantidad(clientActual.getCantidad())
+                .imagen(imageUrl)
+                .categoria(clientActual.getCategoria())
+                .fecha_cre(clientActual.getFecha_cre())
+                .fecha_act(LocalDate.now())
+                .build();
+
+        var clientUpdated = funkoRepository.save(clientActualized);
+        onChange(Notificacion.Tipo.UPDATE, clientUpdated);
+        return clientUpdated;
     }
     public void onChange(Notificacion.Tipo tipo, Funko data) {
 

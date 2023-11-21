@@ -152,7 +152,7 @@ public class FunkosWebController {
 
     @PostMapping("/update-image/{id}")
     public String updateProductImage(@PathVariable("id") Long productId, @RequestParam("imagen") MultipartFile imagen) {
-       // funkosService.updateImage(productId, imagen, true);
+        funkosService.updateImage(productId, imagen, true);
         return "redirect:/funkos/index";
     }
     private String getLocalizedDate(Date date, Locale locale) {

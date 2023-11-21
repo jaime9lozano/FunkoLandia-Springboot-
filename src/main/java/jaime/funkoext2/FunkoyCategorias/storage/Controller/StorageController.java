@@ -21,12 +21,10 @@ import java.util.Map;
 @RequestMapping("/storage")
 public class StorageController {
     private final StorageService storageService;
-    private final FunkoService funkoService;
 
     @Autowired
-    public StorageController(StorageService storageService, FunkoService funkoService) {
+    public StorageController(StorageService storageService) {
         this.storageService = storageService;
-        this.funkoService = funkoService;
     }
     @GetMapping(value = "{filename:.+}")
     @ResponseBody
@@ -62,25 +60,6 @@ public class StorageController {
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se puede subir un fichero vacío");
-        }
-    }
-    @PatchMapping(value = "/imagen/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Funko> nuevoProducto(
-            @PathVariable Long id,
-            @RequestPart("file") MultipartFile file) {
-
-        if (!file.isEmpty()) {
-            String imagen = storageService.store(file);
-            String urlImagen = storageService.getUrl(imagen);
-
-            Funko funko = funkoService.findById(id);
-            funko.setImagen(urlImagen);
-            FunkodtoUpdated dto = new FunkodtoUpdated(funko.getNombre(), funko.getPrecio(), funko.getCantidad(), funko.getImagen(), funko.getCategoria().getCategoria());
-            funkoService.update(id,dto);
-
-            return ResponseEntity.ok(funko);
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se ha enviado la imagen");
         }
     }
 }

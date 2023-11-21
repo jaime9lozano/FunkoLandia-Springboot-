@@ -15,6 +15,7 @@ import jaime.funkoext2.FunkoyCategorias.models.Funko;
 import jaime.funkoext2.FunkoyCategorias.repository.CategoriaRepository;
 import jaime.funkoext2.FunkoyCategorias.repository.FunkoRepository;
 import jaime.funkoext2.FunkoyCategorias.services.FunkoServiceImp;
+import jaime.funkoext2.FunkoyCategorias.storage.Services.StorageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,6 +52,8 @@ class FunkoServiceImpTest {
     WebSocketConfig webSocketConfig;
     @Mock
     FunkoNotificacionMapper funkoNotificacionMapper;
+    @Mock
+    StorageService storageService;
     @InjectMocks
     private FunkoServiceImp funkoServicioImp;
     private mapeador map = new mapeador();
@@ -59,7 +62,7 @@ class FunkoServiceImpTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        funkoServicioImp = new FunkoServiceImp(funkoRepositorio, categoriaRepository, webSocketConfig, funkoNotificacionMapper);
+        funkoServicioImp = new FunkoServiceImp(funkoRepositorio, categoriaRepository, webSocketConfig, funkoNotificacionMapper,storageService);
     }
     @Test
     void findAll_noParams() {

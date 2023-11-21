@@ -3,8 +3,11 @@ package jaime.funkoext2.FunkoyCategorias.services;
 import jaime.funkoext2.FunkoyCategorias.models.Funko;
 import jaime.funkoext2.FunkoyCategorias.dto.Funkodto;
 import jaime.funkoext2.FunkoyCategorias.dto.FunkodtoUpdated;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,4 +19,5 @@ public interface FunkoService {
     Funko save(Funkodto funkodto);
     Funko update(Long id, FunkodtoUpdated funko);
     boolean DeleteById(Long id);
+    Funko updateImage (Long id, MultipartFile image, Boolean withUrl);
 }
