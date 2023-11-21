@@ -23,6 +23,7 @@
         <thead>
         <tr>
             <th>ID</th>
+            <th>Categoria</th>
             <th>Nombre</th>
             <th>Precio</th>
             <th>Cantidad</th>
@@ -33,6 +34,7 @@
         <tbody>
         <tr th:each="funko : ${funkosPage.content}">
             <td th:text="${funko.id}"></td>
+            <td th:text="${funko.categoria.categoria}"></td>
             <td th:text="${funko.nombre}"></td>
             <td th:text="${funko.precio}"></td>
             <td th:text="${funko.cantidad}"></td>
