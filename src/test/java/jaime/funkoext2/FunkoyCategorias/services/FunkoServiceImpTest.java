@@ -1,8 +1,8 @@
 package jaime.funkoext2.FunkoyCategorias.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jaime.funkoext2.FunkoyCategorias.Config.WebSocket.WebSocketConfig;
-import jaime.funkoext2.FunkoyCategorias.Config.WebSocket.WebSocketHandler;
+import jaime.funkoext2.Config.WebSocket.WebSocketConfig;
+import jaime.funkoext2.Config.WebSocket.WebSocketHandler;
 import jaime.funkoext2.FunkoyCategorias.Exceptions.CategoriaNoEncontrada;
 import jaime.funkoext2.FunkoyCategorias.WebSocket.FunkoNotificacionMapper;
 import jaime.funkoext2.FunkoyCategorias.WebSocket.Notificacion;
@@ -14,7 +14,6 @@ import jaime.funkoext2.FunkoyCategorias.models.Categoria;
 import jaime.funkoext2.FunkoyCategorias.models.Funko;
 import jaime.funkoext2.FunkoyCategorias.repository.CategoriaRepository;
 import jaime.funkoext2.FunkoyCategorias.repository.FunkoRepository;
-import jaime.funkoext2.FunkoyCategorias.services.FunkoServiceImp;
 import jaime.funkoext2.FunkoyCategorias.storage.Services.StorageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

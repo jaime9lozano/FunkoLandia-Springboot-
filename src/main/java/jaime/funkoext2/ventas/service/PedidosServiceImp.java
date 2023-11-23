@@ -39,6 +39,11 @@ public class PedidosServiceImp implements PedidosService{
     }
 
     @Override
+    public Page<Pedido> findByIdUsuario(Long idUsuario, Pageable pageable) {
+        return pedidosRepository.findByIdUsuario(idUsuario, pageable);
+    }
+
+    @Override
     @Transactional
     @CachePut
     public Pedido save(Pedido pedido) {

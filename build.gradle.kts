@@ -35,6 +35,8 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     implementation("org.webjars:bootstrap:4.6.2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.security:spring-security-test")
+    implementation("org.springframework.boot:spring-boot-starter-security")
 }
 
 tasks.withType<Test> {

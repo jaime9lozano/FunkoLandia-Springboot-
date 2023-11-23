@@ -3,8 +3,8 @@ package jaime.funkoext2.FunkoyCategorias.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jaime.funkoext2.FunkoyCategorias.Config.WebSocket.WebSocketConfig;
-import jaime.funkoext2.FunkoyCategorias.Config.WebSocket.WebSocketHandler;
+import jaime.funkoext2.Config.WebSocket.WebSocketConfig;
+import jaime.funkoext2.Config.WebSocket.WebSocketHandler;
 import jaime.funkoext2.FunkoyCategorias.Exceptions.CategoriaNoEncontrada;
 import jaime.funkoext2.FunkoyCategorias.Exceptions.FunkoNoEncontrado;
 import jaime.funkoext2.FunkoyCategorias.mapper.mapeador;

@@ -1,4 +1,4 @@
-package jaime.funkoext2.FunkoyCategorias.Config.WebSocket;
+package jaime.funkoext2.Config.WebSocket;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

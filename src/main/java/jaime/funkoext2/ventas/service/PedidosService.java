@@ -9,6 +9,7 @@ public interface PedidosService {
     Page<Pedido> findAll(Pageable pageable);
 
     Pedido findById(ObjectId idPedido);
+    Page<Pedido> findByIdUsuario(Long idUsuario, Pageable pageable);
 
     Pedido save(Pedido pedido);
 

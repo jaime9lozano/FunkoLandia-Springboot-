@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,19 @@ public class PedidoController {
     @GetMapping("/pedidos/{id}")
     public ResponseEntity<Pedido> getPedido(@PathVariable("id") ObjectId idPedido) {
         return ResponseEntity.ok(service.findById(idPedido));
+    }
+
+    @GetMapping("/pedidos/usuario/{id}")
+    public ResponseEntity<PageResponse<Pedido>> getPedidosByUsuario(
+            @PathVariable("id") Long idUsuario,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction
+    ) {
+        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return ResponseEntity.ok(PageResponse.of(service.findByIdUsuario(idUsuario, pageable), sortBy, direction));
     }
     @PostMapping("/pedidos")
     public ResponseEntity<Pedido> createPedido(@Valid @RequestBody Pedido pedido) {

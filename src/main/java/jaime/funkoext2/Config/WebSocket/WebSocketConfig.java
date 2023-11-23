@@ -1,4 +1,4 @@
-package jaime.funkoext2.FunkoyCategorias.Config.WebSocket;
+package jaime.funkoext2.Config.WebSocket;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

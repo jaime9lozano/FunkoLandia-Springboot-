@@ -1,4 +1,4 @@
-package jaime.funkoext2.web;
+package jaime.funkoext2.Config.web;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
