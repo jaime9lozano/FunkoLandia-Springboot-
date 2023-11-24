@@ -1,7 +1,11 @@
 package jaime.funkoext2.funko.controller;
 
-
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jaime.funkoext2.funko.dto.Funkodto;
 import jaime.funkoext2.funko.dto.FunkodtoUpdated;
 import jaime.funkoext2.funko.models.Funko;
@@ -30,12 +34,29 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("${api.version}/funkos")
+@Tag(name = "Funkos", description = "Endpoint de Funkos de nuestra tienda")
 public class FunkoControlador {
     private final FunkoService funkoServicio;
     @Autowired
     public FunkoControlador(FunkoService funkoServicio) {
         this.funkoServicio = funkoServicio;
     }
+    @Operation(summary = "Obtiene todos los funkos", description = "Obtiene una lista de funkos")
+    @Parameters({
+            @Parameter(name = "nombre", description = "Nombre del funko", example = ""),
+            @Parameter(name = "preciomax", description = "Precio máximo del funko", example = ""),
+            @Parameter(name = "preciomin", description = "Precio minimo del Funko", example = ""),
+            @Parameter(name = "cantidadmin", description = "Cantidad mínimo del funko", example = ""),
+            @Parameter(name = "cantidadmax", description = "Cantidad máximo del funko", example = ""),
+            @Parameter(name = "imagen", description = "Imagen del funko", example = ""),
+            @Parameter(name = "page", description = "Número de página", example = "0"),
+            @Parameter(name = "size", description = "Tamaño de la página", example = "10"),
+            @Parameter(name = "sortBy", description = "Campo de ordenación", example = "id"),
+            @Parameter(name = "direction", description = "Dirección de ordenación", example = "asc")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Página de funkos"),
+    })
     @GetMapping
     public ResponseEntity<PageResponse<Funko>> getProducts(
             @RequestParam(required = false) Optional<String> nombre,
@@ -55,23 +76,55 @@ public class FunkoControlador {
                 .body(PageResponse.of(pageResult, sortBy, direction));
     }
 
+    @Operation(summary = "Obtiene un funko por su id", description = "Obtiene un funko por su id")
+    @Parameters({
+            @Parameter(name = "id", description = "Identificador del funko", example = "1", required = true)
+    })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Funko"),
+            @ApiResponse(responseCode = "404", description = "Funko no encontrado"),
+    })
     @GetMapping("/{id}")
     public ResponseEntity<Funko> getProduct(@PathVariable Long id) {
         return ResponseEntity.ok(funkoServicio.findById(id));
     }
 
+    @Operation(summary = "Crea un funko", description = "Crea un funko")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Funko a crear", required = true)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Funko creado"),
+            @ApiResponse(responseCode = "400", description = "Funko no válido"),
+    })
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Funko> createProduct(@Valid @RequestBody Funkodto funko)  {
         return ResponseEntity.status(HttpStatus.CREATED).body(funkoServicio.save(funko));
     }
 
+    @Operation(summary = "Actualiza un funko", description = "Actualiza un funko")
+    @Parameters({
+            @Parameter(name = "id", description = "Identificador del funko", example = "1", required = true)
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Funko a actualizar", required = true)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Funko actualizado"),
+            @ApiResponse(responseCode = "400", description = "Funko no válido"),
+            @ApiResponse(responseCode = "404", description = "Funko no encontrado"),
+    })
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Funko> updateProduct(@PathVariable Long id, @Valid @RequestBody FunkodtoUpdated funko) {
         return ResponseEntity.ok(funkoServicio.update(id,funko));
     }
 
+    @Operation(summary = "Borra un Funko", description = "Borra un Funko")
+    @Parameters({
+            @Parameter(name = "id", description = "Identificador del funko", example = "1", required = true)
+    })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Funko borrado"),
+            @ApiResponse(responseCode = "404", description = "Funko no encontrado"),
+    })
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
@@ -79,6 +132,16 @@ public class FunkoControlador {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Actualiza la imagen de un Funko", description = "Actualiza la imagen de un Funko")
+    @Parameters({
+            @Parameter(name = "id", description = "Identificador del funko", example = "1", required = true),
+            @Parameter(name = "file", description = "Fichero a subir", required = true)
+    })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Funko actualizado"),
+            @ApiResponse(responseCode = "400", description = "Funko no válido"),
+            @ApiResponse(responseCode = "404", description = "Funko no encontrado"),
+    })
     @PatchMapping(value = "/image/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Funko> nuevoProducto(
