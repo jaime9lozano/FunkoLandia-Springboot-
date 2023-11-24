@@ -3,7 +3,7 @@ package jaime.funkoext2.user.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import jaime.funkoext2.FunkoyCategorias.util.PageResponse;
+import jaime.funkoext2.util.PageResponse;
 import jaime.funkoext2.user.dto.UserInfoResponse;
 import jaime.funkoext2.user.dto.UserRequest;
 import jaime.funkoext2.user.dto.UserResponse;

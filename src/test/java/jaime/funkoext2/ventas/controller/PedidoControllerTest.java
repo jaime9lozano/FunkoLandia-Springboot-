@@ -4,7 +4,7 @@ package jaime.funkoext2.ventas.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import jaime.funkoext2.FunkoyCategorias.util.PageResponse;
+import jaime.funkoext2.util.PageResponse;
 import jaime.funkoext2.ventas.exception.*;
 import jaime.funkoext2.ventas.models.Cliente;
 import jaime.funkoext2.ventas.models.Direccion;

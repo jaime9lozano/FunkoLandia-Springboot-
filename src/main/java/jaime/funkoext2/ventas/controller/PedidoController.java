@@ -1,6 +1,6 @@
 package jaime.funkoext2.ventas.controller;
 
-import jaime.funkoext2.FunkoyCategorias.util.PageResponse;
+import jaime.funkoext2.util.PageResponse;
 import jaime.funkoext2.ventas.models.Pedido;
 import jaime.funkoext2.ventas.service.PedidosService;
 import jakarta.validation.Valid;

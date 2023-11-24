@@ -1,11 +1,10 @@
 package jaime.funkoext2.ventas.service;
 
-import jaime.funkoext2.FunkoyCategorias.repository.FunkoRepository;
+import jaime.funkoext2.funko.repository.FunkoRepository;
 import jaime.funkoext2.ventas.exception.*;
 import jaime.funkoext2.ventas.models.LineaPedido;
 import jaime.funkoext2.ventas.models.Pedido;
 import jaime.funkoext2.ventas.repository.PedidosRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;

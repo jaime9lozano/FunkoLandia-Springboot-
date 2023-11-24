@@ -1,8 +1,8 @@
 package jaime.funkoext2.ventas.service;
 
-import jaime.funkoext2.FunkoyCategorias.models.Categoria;
-import jaime.funkoext2.FunkoyCategorias.models.Funko;
-import jaime.funkoext2.FunkoyCategorias.repository.FunkoRepository;
+import jaime.funkoext2.Categoria.models.Categoria;
+import jaime.funkoext2.funko.models.Funko;
+import jaime.funkoext2.funko.repository.FunkoRepository;
 import jaime.funkoext2.ventas.exception.*;
 import jaime.funkoext2.ventas.models.LineaPedido;
 import jaime.funkoext2.ventas.models.Pedido;

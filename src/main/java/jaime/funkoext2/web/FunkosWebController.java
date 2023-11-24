@@ -1,11 +1,11 @@
 package jaime.funkoext2.web;
 
-import jaime.funkoext2.FunkoyCategorias.dto.Funkodto;
-import jaime.funkoext2.FunkoyCategorias.dto.FunkodtoUpdated;
-import jaime.funkoext2.FunkoyCategorias.models.Categoria;
-import jaime.funkoext2.FunkoyCategorias.models.Funko;
-import jaime.funkoext2.FunkoyCategorias.services.CategoriaService;
-import jaime.funkoext2.FunkoyCategorias.services.FunkoService;
+import jaime.funkoext2.funko.dto.Funkodto;
+import jaime.funkoext2.funko.dto.FunkodtoUpdated;
+import jaime.funkoext2.Categoria.models.Categoria;
+import jaime.funkoext2.funko.models.Funko;
+import jaime.funkoext2.Categoria.services.CategoriaService;
+import jaime.funkoext2.funko.service.FunkoService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

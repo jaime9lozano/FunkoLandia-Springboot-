@@ -1,6 +1,6 @@
 package jaime.funkoext2.Config.Storage;
 
-import jaime.funkoext2.FunkoyCategorias.storage.Services.StorageService;
+import jaime.funkoext2.storage.Services.StorageService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

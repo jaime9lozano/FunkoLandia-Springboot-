@@ -1,6 +1,6 @@
 package jaime.funkoext2.user.controller;
 
-import jaime.funkoext2.FunkoyCategorias.util.PageResponse;
+import jaime.funkoext2.util.PageResponse;
 import jaime.funkoext2.user.dto.UserInfoResponse;
 import jaime.funkoext2.user.dto.UserRequest;
 import jaime.funkoext2.user.dto.UserResponse;
