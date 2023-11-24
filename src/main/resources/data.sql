@@ -12,7 +12,7 @@ VALUES ( 'Funko 1', '100', '1', 'https://via.placeholder.com/150', '2022-12-12',
     ('Funko 5', '500', '5', 'https://via.placeholder.com/150', '2022-12-12', '2022-12-12',1),
     ( 'Funko 6', '600', '6', 'https://via.placeholder.com/150', '2022-12-12', '2022-12-12',2),
     ('Funko 7', '700', '7', 'https://via.placeholder.com/150', '2022-12-12', '2022-12-12',3);
-
+-- Contraseña: Admin1
 insert into USUARIOS (nombre, apellidos, username, email, password)
 values ('Admin', 'Admin Admin', 'admin', 'admin@prueba.net',
         '$2a$10$vPaqZvZkz6jhb7U7k/V/v.5vprfNdOnh4sxi/qpPRkYTzPmFlI9p2');

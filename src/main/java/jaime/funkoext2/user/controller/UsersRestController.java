@@ -84,7 +84,7 @@ public class UsersRestController {
     }
 
     @GetMapping("/me/profile")
-    @PreAuthorize("hasRole('ADMIN')") // Solo los admin pueden acceder
+    @PreAuthorize("hasRole('USER')") // Solo los admin pueden acceder
     public ResponseEntity<UserInfoResponse> me(@AuthenticationPrincipal User user) {
         // Esta autenticado, por lo que devolvemos sus datos ya sabemos su id
         return ResponseEntity.ok(usersService.findById(user.getId()));

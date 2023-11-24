@@ -1,8 +1,5 @@
 package jaime.funkoext2.FunkoyCategorias.storage.Controller;
 
-import jaime.funkoext2.FunkoyCategorias.models.Funko;
-import jaime.funkoext2.FunkoyCategorias.dto.FunkodtoUpdated;
-import jaime.funkoext2.FunkoyCategorias.services.FunkoService;
 import jaime.funkoext2.FunkoyCategorias.storage.Services.StorageService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
