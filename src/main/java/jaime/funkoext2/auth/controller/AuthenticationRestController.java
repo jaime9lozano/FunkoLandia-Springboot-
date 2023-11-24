@@ -18,7 +18,7 @@ import java.util.Map;
 
 @RestController
 @Slf4j
-@RequestMapping("/auth") // Es la ruta del controlador
+@RequestMapping("${api.version}/auth") // Es la ruta del controlador
 public class AuthenticationRestController {
     private final AuthenticationService authenticationService;
 

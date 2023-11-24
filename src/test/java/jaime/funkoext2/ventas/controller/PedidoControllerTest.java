@@ -25,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -36,8 +37,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @SpringBootTest
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
+@WithMockUser(username = "admin", password = "admin", roles = {"ADMIN", "USER"})
 class PedidoControllerTest {
-    private final String myEndpoint = "http://localhost:8080/pedidos";
+    private final String myEndpoint = "/v1/pedidos";
     private final ObjectMapper mapper = new ObjectMapper();
     private final Pedido pedido1 = Pedido.builder()
             .id(new ObjectId("5f9f1a3b9d6b6d2e3c1d6f1a"))

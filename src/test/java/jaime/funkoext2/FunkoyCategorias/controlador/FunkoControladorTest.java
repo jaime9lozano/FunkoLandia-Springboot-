@@ -23,6 +23,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -39,8 +40,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureMockMvc
 @AutoConfigureJsonTesters
 @ExtendWith(MockitoExtension.class)
+@WithMockUser(username = "admin", password = "admin", roles = {"ADMIN", "USER"})
 class FunkoControladorTest {
-    private final String myEndpoint = "http://localhost:8080/funkos";
+    private final String myEndpoint = "/v1/funkos";
     private final Categoria categoria1 = new Categoria(1L, "Categoria1",LocalDate.now(), LocalDate.now());
     private final Categoria categoria2 = new Categoria(2L, "Categoria2",LocalDate.now(), LocalDate.now());
     private final Funko funko1 =new Funko(1L, "Funko1", 10.29,3 ,"imagen1",categoria1, LocalDate.now(), LocalDate.now());

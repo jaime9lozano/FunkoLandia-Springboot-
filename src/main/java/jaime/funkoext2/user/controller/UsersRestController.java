@@ -29,6 +29,7 @@ import java.util.Optional;
 
 @RestController
 @PreAuthorize("hasRole('USER')")
+@RequestMapping("${api.version}/users")
 public class UsersRestController {
     private final UsersService usersService;
     private final PedidosService pedidosService;
@@ -38,7 +39,7 @@ public class UsersRestController {
         this.pedidosService = pedidosService;
     }
 
-    @GetMapping("/users")
+    @GetMapping
     @PreAuthorize("hasRole('ADMIN')") // Solo los admin pueden acceder
     public ResponseEntity<PageResponse<UserResponse>> findAll(
             @RequestParam(required = false) Optional<String> username,
@@ -57,52 +58,52 @@ public class UsersRestController {
                 .body(PageResponse.of(pageResult, sortBy, direction));
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')") // Solo los admin pueden acceder
     public ResponseEntity<UserInfoResponse> findById(@PathVariable Long id) {
         return ResponseEntity.ok(usersService.findById(id));
     }
 
-    @PostMapping("/users")
+    @PostMapping
     @PreAuthorize("hasRole('ADMIN')") // Solo los admin pueden acceder
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(usersService.save(userRequest));
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')") // Solo los admin pueden acceder
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @Valid @RequestBody UserRequest userRequest) {
         return ResponseEntity.ok(usersService.update(id, userRequest));
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')") // Solo los admin pueden acceder
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         usersService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/users/me/profile")
+    @GetMapping("/me/profile")
     @PreAuthorize("hasRole('ADMIN')") // Solo los admin pueden acceder
     public ResponseEntity<UserInfoResponse> me(@AuthenticationPrincipal User user) {
         // Esta autenticado, por lo que devolvemos sus datos ya sabemos su id
         return ResponseEntity.ok(usersService.findById(user.getId()));
     }
 
-    @PutMapping("/users/me/profile")
+    @PutMapping("/me/profile")
     @PreAuthorize("hasRole('USER')") // Solo los usuarios pueden acceder
     public ResponseEntity<UserResponse> updateMe(@AuthenticationPrincipal User user, @Valid @RequestBody UserRequest userRequest) {
         return ResponseEntity.ok(usersService.update(user.getId(), userRequest));
     }
 
-    @DeleteMapping("/users/me/profile")
+    @DeleteMapping("/me/profile")
     @PreAuthorize("hasRole('USER')") // Solo los usuarios pueden acceder
     public ResponseEntity<Void> deleteMe(@AuthenticationPrincipal User user) {
         usersService.deleteById(user.getId());
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/users/me/pedidos")
+    @GetMapping("/me/pedidos")
     @PreAuthorize("hasRole('USER')") // Solo los usuarios pueden acceder
     public ResponseEntity<PageResponse<Pedido>> getPedidosByUsuario(
             @AuthenticationPrincipal User user,
@@ -116,7 +117,7 @@ public class UsersRestController {
         return ResponseEntity.ok(PageResponse.of(pedidosService.findByIdUsuario(user.getId(), pageable), sortBy, direction));
     }
 
-    @GetMapping("/users/me/pedidos/{id}")
+    @GetMapping("/me/pedidos/{id}")
     @PreAuthorize("hasRole('USER')") // Solo los usuarios pueden acceder
     public ResponseEntity<Pedido> getPedido(
             @AuthenticationPrincipal User user,
@@ -125,7 +126,7 @@ public class UsersRestController {
         return ResponseEntity.ok(pedidosService.findById(idPedido));
     }
 
-    @PostMapping("/users/me/pedidos")
+    @PostMapping("/me/pedidos")
     @PreAuthorize("hasRole('USER')") // Solo los usuarios pueden acceder
     public ResponseEntity<Pedido> savePedido(
             @AuthenticationPrincipal User user,
@@ -135,7 +136,7 @@ public class UsersRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(pedidosService.save(pedido));
     }
 
-    @PutMapping("/users/me/pedidos/{id}")
+    @PutMapping("/me/pedidos/{id}")
     @PreAuthorize("hasRole('USER')") // Solo los usuarios pueden acceder
     public ResponseEntity<Pedido> updatePedido(
             @AuthenticationPrincipal User user,
@@ -145,7 +146,7 @@ public class UsersRestController {
         return ResponseEntity.ok(pedidosService.update(idPedido, pedido));
     }
 
-    @DeleteMapping("/users/me/pedidos/{id}")
+    @DeleteMapping("/me/pedidos/{id}")
     @PreAuthorize("hasRole('USER')") // Solo los usuarios pueden acceder
     public ResponseEntity<Void> deletePedido(
             @AuthenticationPrincipal User user,

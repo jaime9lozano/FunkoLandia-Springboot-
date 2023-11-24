@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -28,13 +29,14 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("${api.version}/funkos")
 public class FunkoControlador {
     private final FunkoService funkoServicio;
     @Autowired
     public FunkoControlador(FunkoService funkoServicio) {
         this.funkoServicio = funkoServicio;
     }
-    @GetMapping("/funkos")
+    @GetMapping
     public ResponseEntity<PageResponse<Funko>> getProducts(
             @RequestParam(required = false) Optional<String> nombre,
             @RequestParam(required = false) Optional<Double> preciomax,
@@ -53,28 +55,32 @@ public class FunkoControlador {
                 .body(PageResponse.of(pageResult, sortBy, direction));
     }
 
-    @GetMapping("/funkos/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Funko> getProduct(@PathVariable Long id) {
         return ResponseEntity.ok(funkoServicio.findById(id));
     }
 
-    @PostMapping("/funkos")
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Funko> createProduct(@Valid @RequestBody Funkodto funko)  {
         return ResponseEntity.status(HttpStatus.CREATED).body(funkoServicio.save(funko));
     }
 
-    @PutMapping("/funkos/{id}")
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Funko> updateProduct(@PathVariable Long id, @Valid @RequestBody FunkodtoUpdated funko) {
         return ResponseEntity.ok(funkoServicio.update(id,funko));
     }
 
-    @DeleteMapping("/funkos/{id}")
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         funkoServicio.DeleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping(value = "/image/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Funko> nuevoProducto(
             @PathVariable Long id,
             @RequestPart("file") MultipartFile file) {

@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +22,15 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
+@PreAuthorize("hasRole('USER')")
+@RequestMapping("${api.version}/categorias")
 public class CategoriaControlador {
     private final CategoriaService categoriaService;
     @Autowired
     public CategoriaControlador(CategoriaService categoriaService) {
         this.categoriaService = categoriaService;
     }
-    @GetMapping("/categorias")
+    @GetMapping
     public ResponseEntity<PageResponse<Categoria>> getProducts(
             @RequestParam(required = false) Optional<String> categoria,
             @RequestParam(defaultValue = "0") int page,
@@ -41,20 +44,23 @@ public class CategoriaControlador {
                 .body(PageResponse.of(pageResult, sortBy, direction));
     }
 
-    @GetMapping("/categorias/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Categoria> getProduct(@PathVariable Long id) {
         return ResponseEntity.ok(categoriaService.findById(id));
     }
 
-    @PostMapping("/categorias")
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Categoria> createProduct(@Valid @RequestBody Categoriadto categoriadto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.save(categoriadto));
     }
-    @PutMapping("/categorias/{id}")
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Categoria> updateProduct(@PathVariable Long id, @Valid @RequestBody CategoriadtoUpdated categoriaUpdated) {
         return ResponseEntity.ok(categoriaService.update(id,categoriaUpdated));
     }
-    @DeleteMapping("/categorias/{id}")
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         categoriaService.DeleteById(id);
         return ResponseEntity.noContent().build();

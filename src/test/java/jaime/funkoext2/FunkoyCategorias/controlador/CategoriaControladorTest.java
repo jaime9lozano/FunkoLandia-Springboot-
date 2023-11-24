@@ -22,6 +22,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.*;
@@ -38,8 +40,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureMockMvc
 @AutoConfigureJsonTesters
 @ExtendWith(MockitoExtension.class)
+@WithMockUser(username = "admin", password = "admin", roles = {"ADMIN", "USER"})
 class CategoriaControladorTest {
-    private final String myEndpoint = "http://localhost:8080/categorias";
+    private final String myEndpoint = "/v1/categorias";
     private final Categoria categoria1 = new Categoria(1L, "MARVEL", LocalDate.now(), LocalDate.now());
     private final Categoria categoria2 = new Categoria(2L, "DISNEY",LocalDate.now(), LocalDate.now());
     private final ObjectMapper mapper = new ObjectMapper();
@@ -54,6 +57,19 @@ class CategoriaControladorTest {
     @Autowired
     public CategoriaControladorTest(CategoriaService service) {
         this.service = service;
+    }
+
+    @Test
+    @WithAnonymousUser
+    void NotAuthenticated() throws Exception {
+        // Localpoint
+        MockHttpServletResponse response = mockMvc.perform(
+                        get(myEndpoint)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        assertEquals(403, response.getStatus());
     }
 
     @Test
