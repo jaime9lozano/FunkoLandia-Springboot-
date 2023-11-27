@@ -16,6 +16,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,12 +25,15 @@ import java.util.Optional;
 @CacheConfig(cacheNames = {"users"})
 public class UsersServiceImp implements UsersService{
     UsersRepository usersRepository;
+    PasswordEncoder passwordEncoder;
     PedidosRepository pedidosRepository;
     private final UsersMapper usersMapper;
-    public UsersServiceImp(UsersRepository usersRepository, PedidosRepository pedidosRepository, UsersMapper usersMapper) {
+
+    public UsersServiceImp(UsersRepository usersRepository, PedidosRepository pedidosRepository, UsersMapper usersMapper, PasswordEncoder passwordEncoder) {
         this.usersRepository = usersRepository;
         this.pedidosRepository = pedidosRepository;
         this.usersMapper = usersMapper;
+        this.passwordEncoder = passwordEncoder;
     }
     @Override
     public Page<UserResponse> findAll(Optional<String> username, Optional<String> email, Optional<Boolean> isDeleted, Pageable pageable) {
@@ -70,6 +74,7 @@ public class UsersServiceImp implements UsersService{
     @Override
     @CachePut(key = "#result.id")
     public UserResponse save(UserRequest userRequest) {
+        userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         // No debe existir otro con el mismo username o email
         usersRepository.findByUsernameEqualsIgnoreCaseOrEmailEqualsIgnoreCase(userRequest.getUsername(), userRequest.getEmail())
                 .ifPresent(u -> {
@@ -81,6 +86,7 @@ public class UsersServiceImp implements UsersService{
     @Override
     @CachePut(key = "#result.id")
     public UserResponse update(Long id, UserRequest userRequest) {
+        userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         usersRepository.findById(id).orElseThrow(() -> new UserNotFound(id));
         // No debe existir otro con el mismo username o email, y si existe soy yo mismo
         usersRepository.findByUsernameEqualsIgnoreCaseOrEmailEqualsIgnoreCase(userRequest.getUsername(), userRequest.getEmail())

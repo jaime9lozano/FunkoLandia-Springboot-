@@ -6,6 +6,7 @@ import jaime.funkoext2.user.dto.UserRequest;
 import jaime.funkoext2.user.dto.UserResponse;
 import jaime.funkoext2.user.models.User;
 import jaime.funkoext2.user.service.UsersService;
+import jaime.funkoext2.ventas.exception.PedidoNotFound;
 import jaime.funkoext2.ventas.models.Pedido;
 import jaime.funkoext2.ventas.service.PedidosService;
 import jakarta.validation.Valid;
@@ -123,7 +124,11 @@ public class UsersRestController {
             @AuthenticationPrincipal User user,
             @PathVariable("id") ObjectId idPedido
     ) {
-        return ResponseEntity.ok(pedidosService.findById(idPedido));
+        var pedido = pedidosService.findById(idPedido);
+        if (!pedido.getIdUsuario().equals(user.getId())) {
+            throw new PedidoNotFound(pedido.get_id());
+        }
+        return ResponseEntity.ok(pedido);
     }
 
     @PostMapping("/me/pedidos")
@@ -143,7 +148,11 @@ public class UsersRestController {
             @PathVariable("id") ObjectId idPedido,
             @Valid @RequestBody Pedido pedido) {
         pedido.setIdUsuario(user.getId());
-        return ResponseEntity.ok(pedidosService.update(idPedido, pedido));
+       var pedidoFinal = pedidosService.update(idPedido, pedido);
+        if (!pedidoFinal.getIdUsuario().equals(user.getId())) {
+            throw new PedidoNotFound(pedido.get_id());
+        }
+        return ResponseEntity.ok(pedidoFinal);
     }
 
     @DeleteMapping("/me/pedidos/{id}")
@@ -152,6 +161,10 @@ public class UsersRestController {
             @AuthenticationPrincipal User user,
             @PathVariable("id") ObjectId idPedido
     ) {
+        var pedido = pedidosService.findById(idPedido);
+        if (!pedido.getIdUsuario().equals(user.getId())) {
+            throw new PedidoNotFound(pedido.get_id());
+        }
         pedidosService.delete(idPedido);
         return ResponseEntity.noContent().build();
     }
