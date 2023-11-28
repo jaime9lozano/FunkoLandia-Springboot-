@@ -28,8 +28,8 @@ WORKDIR /app
 # Para copiar un archivo de una etapa a otra, se usa la instrucción COPY --from=etapaOrigen
 COPY --from=build /app/build/libs/*SNAPSHOT.jar /app/my-app.jar
 
-# Expone el puerto 8080
-EXPOSE 8080
+# Expone el puerto 3000
+EXPOSE 3000
 
 # Ejecuta el jar
 # Para lanzarlo con un perfil distinto al fijado por defecto, se usa la instrucción
