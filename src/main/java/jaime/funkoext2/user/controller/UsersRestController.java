@@ -132,7 +132,7 @@ public class UsersRestController {
     }
 
     @PostMapping("/me/pedidos")
-    @PreAuthorize("hasRole('USER')") // Solo los usuarios pueden acceder
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Pedido> savePedido(
             @AuthenticationPrincipal User user,
             @Valid @RequestBody Pedido pedido
