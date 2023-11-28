@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,8 @@ class UsersServiceImpTest {
     private final UserInfoResponse userIResponse = UserInfoResponse.builder().username("test").email("test@test.com").build();
     @Mock
     private UsersRepository usersRepository;
+    @Mock
+    PasswordEncoder passwordEncoder;
     @Mock
     private PedidosRepository pedidosRepository;
     @Mock
