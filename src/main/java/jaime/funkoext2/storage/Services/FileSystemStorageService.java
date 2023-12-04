@@ -31,7 +31,7 @@ public class FileSystemStorageService implements StorageService {
     public String store(MultipartFile file) {
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
         String extension = StringUtils.getFilenameExtension(filename);
-        String justFilename = filename.replace("." + extension, "");
+        String justFilename = filename.replace("." + extension, "").replace(" ", "_");
         String storedFilename = System.currentTimeMillis() + "_" + justFilename + "." + extension;
 
         try {
